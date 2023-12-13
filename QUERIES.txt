@@ -1,0 +1,50 @@
+QUESTION Number of Tracks Sold by Genre?
+SELECT g.name, COUNT(t.trackid) AS NUM_Tracks_Sold
+FROM genre g
+JOIN Track t
+ON g.genreid = t.genreid
+JOIN InvoiceLine il
+ON il.trackid = t.trackid
+GROUP BY g.name
+ORDER BY NUM_Tracks_Sold DESC
+
+QUESTION MOST POPULAR ARTISITE BASED ON SALES
+SELECT ar.name AS Artist_Name,ab.albumid, ab.title, SUM(il.unitprice * il.quantity) AS Sales
+FROM Artist ar
+JOIN Album ab
+ON ar.artistid = ab.artistid
+JOIN Track t
+ON ab.albumid = t.albumid
+JOIN InvoiceLine il
+ON il.trackid = t.trackid
+GROUP BY Artist_Name
+ORDER BY Sales DESC
+LIMIT 5;
+
+MUSIC SALES BASED ON COUNTRY
+SELECT i.billingcountry AS Country, SUM(il.unitprice * il.quantity) AS Sales
+FROM Invoice i
+JOIN InvoiceLine il
+ON i.invoiceid = il.invoiceid
+JOIN Track t
+ON t.Trackid = il.Trackid
+GROUP BY i.billingcountry
+ORDER BY sales DESC;
+
+
+TOP 5 BLUES GENEre
+
+SELECT t.Composer, g.name, SUM(il.unitprice * il.quantity) AS Sales
+FROM Invoice i
+JOIN InvoiceLine il
+ON i.invoiceid = il.invoiceid
+JOIN Track t
+ON t.Trackid = il.Trackid
+JOIN Genre g
+ON g.GenreId = t.GenreId
+WHERE g.name = "Blues"
+GROUP BY t.Composer
+ORDER BY sales DESC
+LIMIT 5
+
+
